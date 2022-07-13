@@ -7,8 +7,6 @@ let handler = async (m, {
 	let _timers = (500000 - __timers)
 	let timers = clockString(_timers)
 	
-	if (user.pickaxe < 1) return m.reply(`*Kamu tidak memiliki Pickaxe*\n*Silahkan membeli Pickaxe si shop dengan mengetik _${usedPrefix}buy pickaxe_ atau _${usedPrefix}craft pickaxe_ agar kamu bisa ngocok*`)
-    if (user.pickaxedurability < 10) return m.reply(`Durability pickaxe anda kurang\nSilahkan repair pickaxe agar bisa ngocok dengan menggunakan command _${usedPrefix}repair pickaxe_`)
     if (user.stamina < 20) return m.reply(`Stamina anda tidak cukup untuk ngocok\nharap isi stamina anda dengan _#eat_`)
 	if (new Date - user.lastngocok > 500000) {
 		let randomaku1 = `${Math.floor(Math.random() * 5)}`
@@ -32,28 +30,18 @@ let handler = async (m, {
 		let rbrb8 = (randomaku8 * 1)
 		let rbrb9 = (randomaku9 * 1)
 
-		wuis1 = `${rbrb1}`
-		wuis2 = `${rbrb2}`
-		wuis3 = `${rbrb3}`
-		wuis4 = `${rbrb4}`
-		wuis5 = `${rbrb5}`
-		wuis6 = `${rbrb6}`
-		wuis7 = `${rbrb7}`
-		wuis8 = `${rbrb8}`
-		wuis9 = `${rbrb9}`
-
 		hsl = `
 *《 Hasil Ngocok Kali Ini 》*
 
- *💎 = [ ${wuis1} ] Diamond*
- *⛓️ = [ ${wuis2} ] Iron*
- *🪙 = [ ${wuis3} ] Gold*
- *💚 = [ ${wuis4} ] Emerald*
- *🪨 = [ ${wuis5} ] Rock*
- *🌕 = [ ${wuis6} ] Clay*
- *🕳️ = [ ${wuis7} ] Coal*
- *🌑 = [ ${wuis8} ] Sand*
- *✉️ = [ ${wuis9} ] Exp*
+ *💎 = [ ${rbrb1} ] Diamond*
+ *⛓️ = [ ${rbrb2} ] Iron*
+ *🪙 = [ ${rbrb3} ] Gold*
+ *💚 = [ ${rbrb4} ] Emerald*
+ *🪨 = [ ${rbrb5} ] Rock*
+ *🌕 = [ ${rbrb6} ] Clay*
+ *🕳️ = [ ${rbrb7} ] Coal*
+ *🌑 = [ ${rbrb8} ] Sand*
+ *✉️ = [ ${rbrb9} ] Exp*
  
  Stamina anda berkurang -20
 `

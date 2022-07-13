@@ -1,114 +1,79 @@
-let handler = async (m, {
-	conn,
-	usedPrefix
-}) => {
-	
-	let user = global.db.data.users[m.sender]
-	let __timers = (new Date - user.lastmining)
-	let _timers = (500000 - __timers)
-	let timers = clockString(_timers)
-	
-	if (user.pickaxe < 1) return m.reply(`*Kamu tidak memiliki Pickaxe*\n*Silahkan membeli Pickaxe si shop dengan mengetik _${usedPrefix}buy pickaxe_ atau _${usedPrefix}craft pickaxe_ agar kamu bisa Mining*`)
-    if (user.pickaxedurability < 10) return m.reply(`Durability pickaxe anda kurang\nSilahkan repair pickaxe agar bisa Mining dengan menggunakan command _${usedPrefix}repair pickaxe_`)
-    if (user.stamina < 20) return m.reply(`Stamina anda tidak cukup untuk bekerja\nharap isi stamina anda dengan _#eat_`)
-	if (new Date - user.lastmining > 500000) {
-		let randomaku1 = `${Math.floor(Math.random() * 5)}`
-		let randomaku2 = `${Math.floor(Math.random() * 10)}`
-		let randomaku4 = `${Math.floor(Math.random() * 7)}`
-		let randomaku3 = `${Math.floor(Math.random() * 4)}`
-		let randomaku5 = `${Math.floor(Math.random() * 200)}`
-		let randomaku6 = `${Math.floor(Math.random() * 200)}`
-		let randomaku7 = `${Math.floor(Math.random() * 20)}`
-		let randomaku8 = `${Math.floor(Math.random() * 100)}`
-		let randomaku9 = `${Math.floor(Math.random() * 100)}`
-			.trim()
-
-		let rbrb1 = (randomaku1 * 1)
-		let rbrb2 = (randomaku2 * 1)
-		let rbrb3 = (randomaku3 * 1)
-		let rbrb4 = (randomaku4 * 1)
-		let rbrb5 = (randomaku5 * 1)
-		let rbrb6 = (randomaku6 * 1)
-		let rbrb7 = (randomaku7 * 1)
-		let rbrb8 = (randomaku8 * 1)
-		let rbrb9 = (randomaku9 * 1)
-
-		wuis1 = `${rbrb1}`
-		wuis2 = `${rbrb2}`
-		wuis3 = `${rbrb3}`
-		wuis4 = `${rbrb4}`
-		wuis5 = `${rbrb5}`
-		wuis6 = `${rbrb6}`
-		wuis7 = `${rbrb7}`
-		wuis8 = `${rbrb8}`
-		wuis9 = `${rbrb9}`
-
-		hsl = `
-*《 Hasil Mining Kali Ini 》*
-
- *💎 = [ ${wuis1} ] Diamond*
- *⛓️ = [ ${wuis2} ] Iron*
- *🪙 = [ ${wuis3} ] Gold*
- *💚 = [ ${wuis4} ] Emerald*
- *🪨 = [ ${wuis5} ] Rock*
- *🌕 = [ ${wuis6} ] Clay*
- *🕳️ = [ ${wuis7} ] Coal*
- *🌑 = [ ${wuis8} ] Sand*
- *✉️ = [ ${wuis9} ] Exp*
- 
- Stamina anda berkurang -20
-`
-		user.diamond += rbrb1
-		user.iron += rbrb2
-		user.gold += rbrb3
-		user.emerald += rbrb4
-		user.rock += rbrb5
-		user.clay += rbrb6
-		user.coal += rbrb7
-		user.sand += rbrb8
-		user.exp += rbrb9
-		user.stamina -= 20
-
-		setTimeout(() => {
-			m.reply(`${hsl}`)
-		}, 20000)
-
-		setTimeout(() => {
-			m.reply(`_Nah ini dia_`)
-		}, 18000)
-
-		setTimeout(() => {
-			m.reply(`_mulai menggali ore_`)
-		}, 15000)
-
-		setTimeout(() => {
-			m.reply(`_Sabar_`)
-		}, 14000)
-
-		setTimeout(() => {
-			m.reply(`_Masuk ke tambang dulu ngab_`)
-		}, 0)
-		user.lastmining = new Date * 1
-		user.pickaxedurability -= 5
-	} else conn.sendButton(m.chat, `\n*Sepertinya Anda Sudah Kecapekan*\n*Silahkan Istirahat Dulu sekitar ${timers}*\n*Untuk bisa melanjutkan Mining*\n`, author, null, [
-		['Inventory', '/inv']
-	], m)
-	
+const cooldown = 300000
+let handler = async (m, { usedPrefix }) => {
+    let user = global.db.data.users[m.sender]
+    let timers = (cooldown - (new Date - user.lastmining))
+    if (user.health < 80) return m.reply(`
+Requires at least 80 ❤️Healths for the mining!!
+please buy ❤️Healths first by typing *${usedPrefix}buy potion <quantity>*,
+and type *${usedPrefix}heal <quantity>* to use potions
+`.trim())
+    if (user.pickaxe == 0) return m.reply('Mau mining ga punya pickaxe 🗿')
+    if (new Date - user.lastmining <= cooldown) return m.reply(`
+You're already mining!!, please wait *🕐${timers.toTimeString()}*
+`.trim())
+    const rewards = reward(user)
+    let text = 'you\'ve been mining and lost'
+    for (const lost in rewards.lost) if (user[lost]) {
+        const total = rewards.lost[lost].getRandom()
+        user[lost] -= total * 1
+        if (total) text += `\n*${global.rpg.emoticon(lost)}${lost}:* ${total}`
+    }
+    text += '\n\nBut you got'
+    for (const rewardItem in rewards.reward) if (rewardItem in user) {
+        const total = rewards.reward[rewardItem].getRandom()
+        user[rewardItem] += total * 1
+        if (total) text += `\n*${global.rpg.emoticon(rewardItem)}${rewardItem}:* ${total}`
+    }
+    m.reply(text.trim())
+    user.lastmining= new Date * 1
 }
 handler.help = ['mining']
 handler.tags = ['rpg']
 handler.command = /^(mining)$/i
+
+handler.cooldown = cooldown
+handler.disabled = false
+
 export default handler
 
-function clockString(ms) {
-	let h = Math.floor(ms / 3600000)
-	let m = Math.floor(ms / 60000) % 60
-	let s = Math.floor(ms / 1000) % 60
-	console.log({
-		ms,
-		h,
-		m,
-		s
-	})
-	return [h, m, s].map(v => v.toString().padStart(2, 0)).join(':')
+function reward(user = {}) {
+    let rewards = {
+        reward: {
+            exp: 1000,
+            trash: 101,
+            string: 25,
+            rock: 30,
+            iron: 25,
+            diamond: 10,
+            emerald: 4,
+            common: 2 * (user.dog && (user.dog > 2 ? 2 : user.dog) * 1.2 || 1),
+            uncommon: [0, 0, 0, 1, 0].concat(
+                new Array(5 - (
+                    (user.dog > 2 && user.dog < 6 && user.dog) || (user.dog > 5 && 5) || 2
+                )).fill(0)
+            ),
+            mythic: [0, 0, 0, 0, 0, 1, 0, 0, 0].concat(
+                new Array(8 - (
+                    (user.dog > 5 && user.dog < 8 && user.dog) || (user.dog > 7 && 8) || 3
+                )).fill(0)
+            ),
+            legendary: [0, 0, 0, 0, 0, 0, 0, 1, 0, 0].concat(
+                new Array(10 - (
+                    (user.dog > 8 && user.dog) || 4
+                )).fill(0)
+            ),
+            iron: [0, 0, 0, 1, 0, 0],
+            gold: [0, 0, 0, 0, 0, 1, 0],
+            diamond: [0, 0, 0, 0, 0, 0, 1, 0].concat(
+                new Array(5 - (
+                    (user.fox < 6 && user.fox) || (user.fox > 5 && 5) || 0
+                )).fill(0)
+            ),
+        },
+        lost: {
+            health: 40 - user.cat * 4,
+            pickaxedurability: 10
+        }
+    }
+    return rewards
 }

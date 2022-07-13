@@ -33,28 +33,18 @@ let handler = async (m, {
 		let rbrb8 = (randomaku8 * 1)
 		let rbrb9 = (randomaku9 * 1)
 
-		wuis1 = `${rbrb1}`
-		wuis2 = `${rbrb2}`
-		wuis3 = `${rbrb3}`
-		wuis4 = `${rbrb4}`
-		wuis5 = `${rbrb5}`
-		wuis6 = `${rbrb6}`
-		wuis7 = `${rbrb7}`
-		wuis8 = `${rbrb8}`
-		wuis9 = `${rbrb9}`
-
 		hsl = `
 *《 Hasil Nambang Kali Ini 》*
 
- *💎 = [ ${wuis1} ] Diamond*
- *⛓️ = [ ${wuis2} ] Iron*
- *🪙 = [ ${wuis3} ] Gold*
- *💚 = [ ${wuis4} ] Emerald*
- *🪨 = [ ${wuis5} ] Rock*
- *🌕 = [ ${wuis6} ] Clay*
- *🕳️ = [ ${wuis7} ] Coal*
- *🌑 = [ ${wuis8} ] Sand*
- *✉️ = [ ${wuis9} ] Exp*
+ *💎 = [ ${rbrb1} ] Diamond*
+ *⛓️ = [ ${rbrb2} ] Iron*
+ *🪙 = [ ${rbrb3} ] Gold*
+ *💚 = [ ${rbrb4} ] Emerald*
+ *🪨 = [ ${rbrb5} ] Rock*
+ *🌕 = [ ${rbrb6} ] Clay*
+ *🕳️ = [ ${rbrb7} ] Coal*
+ *🌑 = [ ${rbrb8} ] Sand*
+ *✉️ = [ ${rbrb9} ] Exp*
  
  Stamina anda berkurang -20
 `

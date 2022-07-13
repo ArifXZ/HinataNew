@@ -92,6 +92,7 @@ const inventory = {
     cat: 10,
     fox: 10,
     dog: 10,
+    robo: 10,
   },
   cooldowns: {
     lastclaim: {
@@ -140,6 +141,9 @@ ${pets}` : ''}${cooldowns ? `
 ${cooldowns}` : ''}
 *✧ dungeon: ${user.lastdungeon == 0 ? '✅': '❌'}*
 *✧ mining: ${user.lastmining == 0 ? '✅': '❌'}*
+*✧ roket: ${user.lastroket == 0 ? '✅': '❌'}*
+*✧ mancing: ${user.lastmancing == 0 ? '✅': '❌'}*
+*✧ ngojek: ${user.lastngojek == 0 ? '✅': '❌'}*
 `.trim()
 conn.sendButton(m.chat, '*━┈━┈━『 INVENTORY 』━┈━┈━*', caption, imgr + 'inventory', [
 [`ᴛʀᴀɴsғᴇʀ`, `.transfer`],
